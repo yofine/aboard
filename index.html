@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>上船小兄弟</title>
+</head>
+<body>
+  <input type="file" name="upfile" id="foo" webkitdirectory/>
+  <button id='submit' onclick=submit()>upload</button>
+  <script src="./node_modules/whatwg-fetch/fetch.js"></script>
+  <script>
+    var submit = function(e) {
+      var files = $('#foo')[0].files
+      var data = new FormData()
+      for(var i = 0; i < files.length; i++) {
+        if(files[i].name !== ".DS_Store") {
+          var filename = 'file' + i
+          data.append(filename, files[i])
+        }
+      }
+      fetch('/api/upload', {
+        method: 'post',
+        body: data,
+      })
+    }
+  </script>
+</body>
+</html>
