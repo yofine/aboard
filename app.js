@@ -9,6 +9,11 @@ var mkdirp = require('mkdirp')
 server.use(bodyParser.json({limit: "100000000kb"}))
 server.use(bodyParser.urlencoded({ extended: true, limit: "100000000kb" }))
 
+server.get('/', function(req, res, next) {
+   res.writeHead(200, {'content-type': 'text/plain'});
+  res.end('Hello')
+})
+
 server.post('/upload', function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.encoding = 'utf-8';
