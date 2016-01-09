@@ -12,3 +12,7 @@ bower_componets
 psd
 thumb
 sketch
+
+uploads
+tmp
+*.swp
