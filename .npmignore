@@ -4,15 +4,11 @@ logs
 **/*.backup.*
 **/*.back.*
 
-webui/node_modules
-service/bower_componets
+node_modules
+bower_componets
 
 *.sublime*
 
 psd
 thumb
 sketch
-
-uploads
-tmp
-*.swp
