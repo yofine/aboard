@@ -13,7 +13,7 @@ export function load() {
 
     request
       .get(url)
-      .set('authorization', '7cd88aab19d17e518a25d223476f53d5f10258d3')
+      .set('authorization', '66619ee67d072240d08f6ce74431ebe6ffbbe33a')
       .end(function(err, res) {
         if (err) {
           dispatch({
