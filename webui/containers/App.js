@@ -89,6 +89,7 @@ class App extends Component {
     return (
       <div>
         <AppBar
+          title="Aboard"
           iconElementLeft={<div></div>}
           iconElementRight={userMenu}
           iconStyleRight={styles.iconStyleRight}

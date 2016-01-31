@@ -5,7 +5,7 @@ logs
 **/*.back.*
 
 webui/node_modules
-service/bower_componets
+service/node_modules
 
 *.sublime*
 

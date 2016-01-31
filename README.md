@@ -1,8 +1,11 @@
-## aboard ![NPM version](https://img.shields.io/npm/v/aboard.svg?style=flat)
+## Aboard
+---
+
+Home page.
+[![Index](http://i4.tietuku.com/ae6bd8144fab7188.png)]()
 
 
-
-### Contributing
+Con tributing
 - Fork this Repo first
 - Clone your Repo
 - Install dependencies by `$ npm install`
@@ -15,8 +18,3 @@
 ### ISC license
 Copyright (c) 2016
 
-
-
----
-![docor]()
-built upon love by [docor](git+https://github.com/turingou/docor.git) v0.3.0
