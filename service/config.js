@@ -2,7 +2,9 @@ module.exports = {
   db: {
     host: 'localhost',
     port: 48015,
-    db: 'aboard'
+    db: 'aboard',
+    min: 50,
+    max: 100
   },
   github: {
     client_id: 'f95feb982a7420fefc57',

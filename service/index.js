@@ -16,48 +16,16 @@ const config = require('./config')
 const connectOptions = config.db
 const github = require('./githubUtils')
 
+const model = require('./utils/model')
+
 app.use(logger)
 app.use(koaBody)
+
+model.init(config.db)
 
 //home controller
 function *home(next) {
   this.body = "Welcome"
-}
-
-// auth
-function *auth(next) {
-  let response = yield github.access_token(this.request.query.code, this.request.query.state)
-  console.log(response.access_token)
-  let user_data = yield github.user(response.access_token)
-  console.log(user_data)
-  this.hooks = {}
-  this.hooks.access_token = response.access_token
-  this.hooks.user_data = user_data
-  yield next
-  let url = '/session/create?access_token=' + response.access_token
-  this.redirect(url)
-}
-
-//user controller
-let user = {
-  add: function *(next) {
-    let user_data = this.hooks.user_data
-    let conn = yield r.connect(connectOptions)
-    let result = yield r.table('user').filter({name: user_data.name}).run(conn)
-    let user = yield result.toArray()
-    if(!user.length) {
-      let user = {
-        name: user_data.name,
-        email: user_data.email,
-        created_at: r.now(),
-        updated_at: r.now(),
-        role: 'member',
-        avatar_url: user_data.avatar_url,
-        github_id: user_data.id
-      }
-      let userInsert = yield r.table('user').insert(user, {return_changes: true}).run(conn)
-    }
-  }
 }
 
 //checkAuth
@@ -177,11 +145,45 @@ let review = {
   }
 }
 
+
+// user controller
+let userController = {
+  auth: function *(next) {
+    let response = yield github.access_token(this.request.query.code, this.request.query.state)
+    console.log(response.access_token)
+    let user_data = yield github.user(response.access_token)
+    console.log(user_data)
+    this.hooks = {}
+    this.hooks.access_token = response.access_token
+    this.hooks.user_data = user_data
+    yield next
+    let url = '/session/create?access_token=' + response.access_token
+    this.redirect(url)
+  },
+  add: function *(next) {
+    let User = model.build('user')
+    let user_data = this.hooks.user_data
+    //TODO user exists check
+    let user = new User({
+      name: user_data.name,
+      email: user_data.email,
+      avatar: user_data.avatar_url,
+      custom_data: {
+        github_id: user_data.id,
+        github_name: user_data.name,
+        github_token: this.hooks.access_token
+      }
+    })
+    let result = yield user.save()
+    this.body = result
+  }
+}
+
 //home
 router.get('/', home)
 
 //auth github callback
-router.get('/auth/github/callback', auth, user.add)
+router.get('/auth/github/callback', userController.auth, userController.add)
 
 //session
 router.get('/session', checkAuth, session)
